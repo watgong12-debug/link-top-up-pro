@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Copy, CheckCircle, AlertTriangle, Shield } from "lucide-react";
+import { Copy, CheckCircle, AlertTriangle, Shield, XCircle } from "lucide-react";
 
 const WALLET_ADDRESS = "TJjHua4gE3LH7qGxbqtLRqwqCrASPjqyMC";
 
@@ -30,16 +30,16 @@ const CryptoPayment = () => {
     return (
       <div className="min-h-screen gradient-bg flex items-center justify-center p-4">
         <div className="glass-card p-10 max-w-sm w-full text-center">
-          <CheckCircle className="w-12 h-12 text-success mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-foreground mb-2">Payment Submitted</h2>
+          <XCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-foreground mb-2">Payment Not Received</h2>
            <p className="text-sm text-muted-foreground mb-6">
-             Your transaction is being verified on the blockchain. This may take a few minutes.
+             We have not received your payment yet. Please make sure you have sent the correct amount to the wallet address and try again.
            </p>
           <button
-            onClick={() => navigate("/topup")}
+            onClick={() => setSubmitted(false)}
             className="gradient-primary text-primary-foreground font-semibold px-8 py-2.5 rounded-lg hover:opacity-90 transition-opacity glow-primary"
           >
-            Back to Dashboard
+            Try Again
           </button>
         </div>
       </div>
