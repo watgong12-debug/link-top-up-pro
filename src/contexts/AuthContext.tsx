@@ -18,7 +18,7 @@ const DEMO_PASSWORD_HASH = btoa("softtop.beijing"); // Simple encoding for demo
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [tokenBalance, setTokenBalance] = useState(105);
+  const [tokenBalance, setTokenBalance] = useState(6450);
 
   const login = (email: string, password: string): boolean => {
     if (email === DEMO_EMAIL && btoa(password) === DEMO_PASSWORD_HASH) {
