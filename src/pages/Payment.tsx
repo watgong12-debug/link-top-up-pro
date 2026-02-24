@@ -1,15 +1,14 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import { Wallet, ArrowRight, AlertCircle } from "lucide-react";
 
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { tokenBalance } = useAuth();
   const { links, total } = (location.state as { links: any[]; total: number }) || { links: [], total: 0 };
 
-  const difference = total - tokenBalance;
-  const needsRecharge = difference > 0;
+  const availableBalance = 250;
+  const totalRequired = 400;
+  const rechargeNeeded = 150;
 
   if (!links?.length) {
     navigate("/topup");
@@ -35,30 +34,24 @@ const Payment = () => {
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">Available Balance</span>
-              <span className="text-lg font-semibold text-success">${tokenBalance.toFixed(2)}</span>
+              <span className="text-lg font-semibold text-success">${availableBalance.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">Total Required</span>
-              <span className="text-lg font-semibold text-foreground">${total.toFixed(2)}</span>
+              <span className="text-lg font-semibold text-foreground">${totalRequired.toFixed(2)}</span>
             </div>
             <div className="border-t border-border/50 pt-3 flex justify-between items-center">
-              <span className="text-sm font-medium text-muted-foreground">
-                {needsRecharge ? "Recharge Needed" : "Remaining After Payment"}
-              </span>
-              <span className={`text-lg font-bold ${needsRecharge ? "text-destructive" : "text-success"}`}>
-                {needsRecharge ? `$${difference.toFixed(2)}` : `$${Math.abs(difference).toFixed(2)}`}
-              </span>
+              <span className="text-sm font-medium text-muted-foreground">Recharge Needed</span>
+              <span className="text-lg font-bold text-destructive">${rechargeNeeded.toFixed(2)}</span>
             </div>
           </div>
 
-          {needsRecharge && (
-            <div className="bg-warning/10 border border-warning/30 rounded-lg p-3 flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-warning mt-0.5 shrink-0" />
-              <p className="text-xs text-warning">
-                Insufficient balance. You need to recharge ${difference.toFixed(2)} to complete this transaction.
-              </p>
-            </div>
-          )}
+          <div className="bg-warning/10 border border-warning/30 rounded-lg p-3 flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 text-warning mt-0.5 shrink-0" />
+            <p className="text-xs text-warning">
+              Insufficient balance. You need to recharge ${rechargeNeeded.toFixed(2)} to complete this transaction.
+            </p>
+          </div>
         </div>
 
         <div className="glass-card p-4">
@@ -80,20 +73,12 @@ const Payment = () => {
           >
             Back
           </button>
-          {needsRecharge ? (
-            <button
-              onClick={() => navigate("/crypto-payment", { state: { amount: difference, links, total } })}
-              className="flex-1 gradient-primary text-primary-foreground font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 glow-primary"
-            >
-              Recharge <ArrowRight className="w-4 h-4" />
-            </button>
-          ) : (
-            <button
-              className="flex-1 gradient-primary text-primary-foreground font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity glow-primary"
-            >
-              Pay Now
-            </button>
-          )}
+          <button
+            onClick={() => navigate("/crypto-payment", { state: { amount: rechargeNeeded, links, total } })}
+            className="flex-1 gradient-primary text-primary-foreground font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 glow-primary"
+          >
+            Recharge <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </div>

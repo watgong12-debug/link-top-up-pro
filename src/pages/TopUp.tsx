@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Plus, Trash2, Globe, Link as LinkIcon, DollarSign, LogOut } from "lucide-react";
+import { Plus, Trash2, Globe, Link as LinkIcon, DollarSign, LogOut, Wallet } from "lucide-react";
 
 interface LinkEntry {
   id: string;
@@ -13,7 +13,7 @@ interface LinkEntry {
 const COUNTRIES = ["United States", "United Kingdom", "Canada", "Germany", "France", "Australia", "Japan", "Brazil", "India", "Other"];
 
 const TopUp = () => {
-  const { userEmail, logout } = useAuth();
+  const { userEmail, tokenBalance, logout } = useAuth();
   const navigate = useNavigate();
   const [links, setLinks] = useState<LinkEntry[]>([
     { id: crypto.randomUUID(), url: "", amount: "", country: "United States" },
@@ -65,6 +65,10 @@ const TopUp = () => {
             Soft<span className="text-primary">Top</span>
           </h1>
           <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 bg-secondary border border-border rounded-lg px-3 py-1.5">
+              <Wallet className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold text-foreground">${tokenBalance.toLocaleString()}</span>
+            </div>
             <span className="text-sm text-muted-foreground hidden sm:block">{userEmail}</span>
             <button onClick={handleLogout} className="text-muted-foreground hover:text-foreground transition-colors">
               <LogOut className="w-4 h-4" />
