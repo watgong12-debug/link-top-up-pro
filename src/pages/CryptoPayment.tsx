@@ -2,16 +2,14 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Copy, CheckCircle, AlertTriangle, Shield } from "lucide-react";
 
-const WALLET_ADDRESS = "TXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; // Replace with real address
+const WALLET_ADDRESS = "TJjHua4gE3LH7qGxbqtLRqwqCrASPjqyMC";
 
 const CryptoPayment = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { amount } = (location.state as { amount: number }) || { amount: 0 };
-  const [txid, setTxid] = useState("");
   const [copied, setCopied] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
 
   const copyAddress = () => {
     navigator.clipboard.writeText(WALLET_ADDRESS);
@@ -20,15 +18,6 @@ const CryptoPayment = () => {
   };
 
   const handleSubmit = () => {
-    if (!txid.trim()) {
-      setError("Please enter your Transaction ID (TXID)");
-      return;
-    }
-    if (txid.trim().length < 10) {
-      setError("Invalid TXID format. Please check and try again.");
-      return;
-    }
-    setError("");
     setSubmitted(true);
   };
 
@@ -43,11 +32,9 @@ const CryptoPayment = () => {
         <div className="glass-card p-10 max-w-sm w-full text-center">
           <CheckCircle className="w-12 h-12 text-success mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-foreground mb-2">Payment Submitted</h2>
-          <p className="text-sm text-muted-foreground mb-6">
-            Your transaction is being verified on the blockchain. This may take a few minutes.
-          </p>
-          <p className="text-xs text-muted-foreground mb-1">TXID</p>
-          <p className="text-xs text-foreground font-mono break-all mb-6">{txid}</p>
+           <p className="text-sm text-muted-foreground mb-6">
+             Your transaction is being verified on the blockchain. This may take a few minutes.
+           </p>
           <button
             onClick={() => navigate("/topup")}
             className="gradient-primary text-primary-foreground font-semibold px-8 py-2.5 rounded-lg hover:opacity-90 transition-opacity glow-primary"
@@ -111,18 +98,6 @@ const CryptoPayment = () => {
         </div>
 
         <div className="glass-card p-6 space-y-4">
-          <div>
-            <label className="text-sm text-muted-foreground mb-1.5 block">Transaction ID (TXID)</label>
-            <input
-              type="text"
-              value={txid}
-              onChange={(e) => { setTxid(e.target.value); setError(""); }}
-              placeholder="Enter your TXID after sending"
-              className="w-full bg-secondary border border-border rounded-lg px-4 py-2.5 text-foreground placeholder:text-muted-foreground text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
-            />
-            {error && <p className="text-xs text-destructive mt-1.5">{error}</p>}
-          </div>
-
           <button
             onClick={handleSubmit}
             className="w-full gradient-primary text-primary-foreground font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity glow-primary"
